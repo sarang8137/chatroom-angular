@@ -1,0 +1,23 @@
+<h1 class="text-center bg-primary">
+    Create Room
+ </h1>
+ <div class="jumbotron">
+     <form action="" [formGroup]="proForm" (ngSubmit)="submitted()">
+         <label for="">Name</label>
+         <input type="text" class="form-control" formControlName="name" placeholder="Enter Room Name">
+         <div class="alert alert-danger" *ngIf="proForm.get('name')?.invalid && proForm.get('name')?.touched">
+             Invalid name
+         </div>
+       
+         <label for="">Slug</label>
+         <input type="text" class="form-control" formControlName="slug" placeholder="Enter slug">
+         <div class="alert alert-danger" *ngIf="proForm.get('slug')?.invalid && proForm.get('slug')?.touched">
+             Invalid slug
+         </div>
+    
+         <div class="text-center">
+             <button class="btn btn-success" [disabled]="proForm.invalid">Create Room</button>
+         </div>
+         
+     </form>
+ </div>

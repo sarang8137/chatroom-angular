@@ -1,0 +1,21 @@
+<h1 class="text-center bg-primary">
+        CHAT ROOM
+    </h1>
+<div class="container" >
+    <div class="text-right">
+        <a routerLink="/room" class="btn btn-success">ROOM</a>
+        <button class="btn btn-lg btn-danger float-right" (click)="logout()">LogOut</button>
+    
+    </div>
+     
+
+        <div class="row" >
+                <div class="card" style="width: 18rem; margin-bottom: 20px; margin: 20px; background-color: aquamarine;" *ngFor="let i of pro">
+                    <div class="card-body">
+                        <h5 class="card-title">{{i.name}}</h5>
+                        <button id="" routerLink="/chat"   class="btn btn-danger">JOIN</button>
+                    </div>
+                </div>
+            </div>
+
+</div>
