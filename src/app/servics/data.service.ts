@@ -74,6 +74,19 @@ export class DataService {
       },
     })
   }
+  getMsg(){
+    let data={
+      'room':localStorage.getItem('room')
+    }
+    return fetch('http://127.0.0.1:8000/room/msgret/', {
+      method: 'POST',
+      body: JSON.stringify(data),
+      headers: {
+        'Content-type': 'application/json; charset=UTF-8',
+        'Authorization':`Token ${localStorage.getItem('token')}`
+      },
+    })
+  }
 
 
 

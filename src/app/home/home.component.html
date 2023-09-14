@@ -13,7 +13,7 @@
                 <div class="card" style="width: 18rem; margin-bottom: 20px; margin: 20px; background-color: aquamarine;" *ngFor="let i of pro">
                     <div class="card-body">
                         <h5 class="card-title">{{i.name}}</h5>
-                        <button id="" routerLink="/chat"   class="btn btn-danger">JOIN</button>
+                        <button id="{{i.id}}" routerLink="/chat" (click)="clicked($event)"   class="btn btn-danger">JOIN</button>
                     </div>
                 </div>
             </div>

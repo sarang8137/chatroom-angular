@@ -14,6 +14,11 @@ export class HomeComponent {
     console.log(this.pro)
   }
 
+  clicked(e:any){
+    let room=e.target.id
+    localStorage.setItem("room",room)
+  }
+
 
 
   logout(){

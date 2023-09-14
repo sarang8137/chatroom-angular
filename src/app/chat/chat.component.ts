@@ -9,8 +9,13 @@ import { Router } from '@angular/router';
   styleUrls: ['./chat.component.css']
 })
 export class ChatComponent {
+  pro:any=[]
+  cc:any=[]
+  id:any=[]
 
-  constructor(private fb:FormBuilder,private ds:DataService,private r:Router){}
+  constructor(private fb:FormBuilder,private ds:DataService,private r:Router){
+   this.getchat()
+  }
 
   chatForm=this.fb.group({
     content:['',[Validators.required]],
@@ -20,16 +25,14 @@ export class ChatComponent {
     let content=this.chatForm.controls.content.value
     console.log(content)
 
-    this.ds.addChat(content).then(res=>res.json()).then(res=>{
-      if(res){
-        alert(" Successfully!!")
-        this.r.navigate(['home'])
-      }
-      else{
-        alert("Something Wrong")
-      }
-    })
+    this.ds.addChat(content).then(res=>res.json()).then(res=>this.cc=res)
+    console.log(this.cc)
 
+  }
+
+  getchat(){
+    this.ds.getMsg().then(res=>res.json()).then(res=>this.pro=res)
+    console.log(this.pro)
   }
 
 }
