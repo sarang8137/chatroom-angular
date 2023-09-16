@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { FormBuilder,Validators } from '@angular/forms';
 import { DataService } from '../servics/data.service';
 import { Router } from '@angular/router';
+import { ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'app-chat',
@@ -10,23 +11,37 @@ import { Router } from '@angular/router';
 })
 export class ChatComponent {
   pro:any=[]
-  cc:any=[]
-  id:any=[]
+ 
+  pid:any
 
-  constructor(private fb:FormBuilder,private ds:DataService,private r:Router){
+  constructor(private ar:ActivatedRoute,private fb:FormBuilder,private ds:DataService,private r:Router){
    this.getchat()
+   this.ar.params.subscribe(res=>this.pid=res['room'])
+   
   }
 
   chatForm=this.fb.group({
-    content:['',[Validators.required]],
+    message:['',[Validators.required]],
+    
   })
 
   submitted(){
-    let content=this.chatForm.controls.content.value
-    console.log(content)
+    let mssg=this.chatForm.controls.message.value
+    console.log(mssg)
+    let rid=localStorage.getItem('room')
 
-    this.ds.addChat(content).then(res=>res.json()).then(res=>this.cc=res)
-    console.log(this.cc)
+    
+
+    this.ds.addChat(mssg,rid).then(res=>res.json()).then(res=>{
+      if(res['token']){
+        console.log(res)
+        localStorage.setItem('token',res['token'])
+      }
+    })
+    this.r.navigateByUrl('/',{skipLocationChange:true}).then(()=>{
+      this.r.navigate(['chat']);
+    });
+  
 
   }
 
@@ -34,6 +49,13 @@ export class ChatComponent {
     this.ds.getMsg().then(res=>res.json()).then(res=>this.pro=res)
     console.log(this.pro)
   }
+
+
+  // clicked(e:any){
+  //   let msg=e.target.id
+  //   localStorage.setItem("msg",msg)
+  // }
+
 
 }
 
@@ -45,67 +67,3 @@ export class ChatComponent {
 
 
 
-
-
-// import { Component, ElementRef, QueryList, ViewChild, ViewChildren } from '@angular/core';
-// import { Message } from '../interface/message';
-// import { SocketIoService } from '../socket-io.service';
-// import { MatList, MatListItem } from '@angular/material/list';
-// import { Subscription } from 'rxjs';
-// import { Router, ActivatedRoute } from '@angular/router';
-
-// @Component({
-//   selector: 'app-room',
-//   templateUrl: './room.component.html',
-//   styleUrls: ['./room.component.css']
-// })
-// export class RoomComponent {
-
-//   nickName: string;
-//   message: string;
-//   mensagens: Message[] = [];
-//   idSala: any;
-//   private sub: Subscription;
-//   private Lista: Subscription;
-
-//   @ViewChild(MatList, {read: ElementRef, static: true}) List: ElementRef
-//   @ViewChildren(MatListItem) listItems: QueryList<MatListItem>
-
-
-//   constructor(
-//     private socketService: SocketIoService,
-//     private routeParam: ActivatedRoute
-//   ) { }
-
-//   ngAfterViewInit(){
-//     this.Lista = this.listItems.changes.subscribe((event) =>{
-//       this.List.nativeElement.scrollTop = this.List.nativeElement.scrollHeight
-//     })
-//   }
-
-//   ngOnInit(){
-//     this.routeParam.params.subscribe((data: any) =>{
-//       this.idSala = data;
-//     })
-//     this.sub = this.socketService.mensagens().subscribe((msg: Message) =>{
-//       console.log(msg);
-//       this.mensagens.push(msg);
-//     })
-//   }
-
-  
-//   enviar(){
-//     this.socketService.enviarMensagem( this.idSala, {
-//       nome: this.nickName,
-//       message: this.message,
-//       nomeSala: ''
-//     });
-//     this.message = '';
-//   }
-
-//   ngOnDestroy(){
-//     this.sub.unsubscribe();
-//     this.Lista.unsubscribe();
-//   }
-
-// }

@@ -61,9 +61,10 @@ export class DataService {
       },
     })
   }
-  addChat(content:any){
+  addChat(content:any,room:any){
     let data={
-      content
+      content,
+      room
     }
     return fetch('http://127.0.0.1:8000/room/', {
       method: 'POST',
@@ -74,6 +75,7 @@ export class DataService {
       },
     })
   }
+
   getMsg(){
     let data={
       'room':localStorage.getItem('room')
